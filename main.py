@@ -17,10 +17,10 @@ bios_filename = "IceLake_U_3.bin"
 programmer = DediProg_CMD.Programmer(directory, bios_filename, ascii_art)
 
 
-# controller.ACoffcheck()
-# controller.dp_on()
-# programmer.run()
-# controller.dp_off()
-# controller.cmos_switch()
-# controller.AConcheck()
+controller.ACoffcheck()
+controller.dp_on()
+programmer.run()
+controller.dp_off()
+controller.cmos_switch()
+controller.AConcheck()
 installer.start_installation()
