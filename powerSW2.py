@@ -9,39 +9,17 @@ import requests
 import ASCIIART
 
 text=ASCIIART.ASCIIArtBuilder()
-
 ACSOFF = text.build("ac","off")
 ACSON = text.build("ac","on")
-
 DPSON = text.build("dp","on")
 DPSOFF = text.build("dp","off")
-
 cmosOn = text.build("cmos","on")
 cmosOff = text.build("cmos","off")
-
 pcson = text.build("power","on")
 pcsoff = text.build("power","off")
-
 kvmson = text.build("kvm","on")
-Turn_off_failed = r""" 
- _____                          __  __    __       _ _          _ 
-|_   _|   _ _ __ _ __     ___  / _|/ _|  / _| __ _(_) | ___  __| |
-  | || | | | '__| '_ \   / _ \| |_| |_  | |_ / _` | | |/ _ \/ _` |
-  | || |_| | |  | | | | | (_) |  _|  _| |  _| (_| | | |  __/ (_| |
-  |_| \__,_|_|  |_| |_|  \___/|_| |_|   |_|  \__,_|_|_|\___|\__,_|
-"""
-
-
-
-ERROR = r"""
-░▒▓████████▓▒░ ░▒▓███████▓▒░  ░▒▓███████▓▒░   ░▒▓██████▓▒░  ░▒▓███████▓▒░  
-░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓██████▓▒░   ░▒▓███████▓▒░  ░▒▓███████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓███████▓▒░  
-░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░ 
-"""
+Turn_off_failed = text.call("Turn_off_failed")
+ERROR = text.call("error")
 
 class DeviceController:
     def __init__(self, IP_adr):
