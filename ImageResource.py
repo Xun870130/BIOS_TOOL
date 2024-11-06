@@ -1,6 +1,5 @@
-#所有使用到的圖檔位置整理
-
 import os
+
 class ImageResource:
     def __init__(self):
         self.current_directory = os.getcwd()
@@ -23,7 +22,13 @@ class ImageResource:
         }
 
     def get_image_path(self, image_name):
-        """ 返回指定圖片的絕對路徑 """
+        """
+        返回指定圖片的絕對路徑。
+        
+        :param image_name: 圖片名稱的鍵，例如 "dropdown" 或 "pin9000"。
+        :return: 圖片的絕對路徑。
+        :raises ValueError: 如果給定的圖片鍵不存在於 image_paths 中。
+        """
         relative_path = self.image_paths.get(image_name)
         if relative_path:
             return os.path.join(self.current_directory, relative_path)

@@ -90,16 +90,24 @@ class ASCIIArtBuilder:
   |_| \__,_|_|  |_| |_|  \___/|_| |_|   |_|  \__,_|_|_|\___|\__,_|"""
 
         }
-    def call (self,text):    
-        text = self.Else[text]
-        return text
+    def call (self,text):
+        # 返回指定文本的 ASCII ART    
+        return self.Else.get(text, "not found")
+
 
     def build(self, device, state):
+        """
+        將設備名稱、狀態名稱、操作符和開關狀態組合在一起，按行組合並返回。
+
+        :param device: 設備名稱鍵 (如 "dp" 或 "power")
+        :param state: 狀態名稱鍵 (如 "on" 或 "off")
+        :return: ASCII ART 字串
+        """
         # 獲取設備和狀態的 ASCII ART，按行拆分
-        device_art_lines = self.device_name.get(device.lower(), "未知設備").splitlines()
+        device_art_lines = self.device_name.get(device.lower(), "unknow").splitlines()
         status_art_lines = self.status_name.splitlines()
         operator_art_lines = self.operator.splitlines()
-        state_art_lines = self.state.get(state.lower(), "未知狀態").splitlines()
+        state_art_lines = self.state.get(state.lower(), "unknow").splitlines()
 
         # 將各部分按行組合，並且不換行顯示
         combined_art = []
@@ -113,7 +121,7 @@ class ASCIIArtBuilder:
         # 最終組合成一個單行顯示的字串
         return "\n".join(combined_art)
 
-
-""" A=ASCIIArtBuilder()
-ZZ=A.build("power","on")
-print(ZZ) """
+# 示例:
+# A=ASCIIArtBuilder()
+# ZZ=A.build("power","on")
+# print(ZZ)

@@ -1,13 +1,8 @@
-#
-#power switch 所有跟電源切換有關的控制函數
-#
-
-
-
 import time
 import requests
 import ASCIIART
 
+# 初始化 ASCII 字符藝術文本
 text=ASCIIART.ASCIIArtBuilder()
 ACSOFF = text.build("ac","off")
 ACSON = text.build("ac","on")
@@ -22,8 +17,10 @@ Turn_off_failed = text.call("Turn_off_failed")
 ERROR = text.call("error")
 
 class DeviceController:
+    """負責管理設備控制命令的類，通過 HTTP API 發送指令控制設備開關"""
     def __init__(self, IP_adr):
-        self.IP_adr = IP_adr
+        self.IP_adr = IP_adr  # 設備 IP 地址
+        # 設置 API 端點 URL
         self.endpoints = {
             "pc_off": f"{self.IP_adr}/arduino/gpio?func=power_click&act=off",
             "pc_on": f"{self.IP_adr}/arduino/gpio?func=power_click&act=on",
@@ -39,6 +36,11 @@ class DeviceController:
             }   
 
     def send_request(self, endpoint_key, ascii_art):
+        """
+        發送 HTTP GET 請求到指定的端點
+        endpoint_key: 要調用的端點鍵
+        ascii_art: 要顯示的 ASCII 藝術文本
+        """
         try:
             url = self.endpoints[endpoint_key]
             response = requests.get(url)
@@ -64,6 +66,9 @@ class DeviceController:
         self.send_request("dp_on", DPSON)
 
     def reset(self):
+        """
+        執行PC重開機
+        """
         try:
             response = requests.get(self.endpoints["reset"])
             response.raise_for_status()
@@ -73,6 +78,9 @@ class DeviceController:
             return None
 
     def power_status(self):
+        """
+        查詢電源狀態
+        """
         try:
             response = requests.get(self.endpoints["p_status"])
             response.raise_for_status()
@@ -94,11 +102,17 @@ class DeviceController:
         self.send_request("cmos_off", cmosOff)
 
     def cmos_switch(self):
+        """
+        執行 CMOS 放電
+        """
         self.cmos_on()
         time.sleep(5)
         self.cmos_off()
 
     def ACoffcheck(self):
+        """
+        檢查並關閉 AC 電源
+        """
         try:
             ps = self.power_status()  # 檢查電源狀態
             if "true" in ps:
@@ -113,6 +127,9 @@ class DeviceController:
         return
 
     def AConcheck(self):
+        """
+        檢查並開啟 AC 電源
+        """
         try:
             # 關閉 DP    
             dp_status = self.send_request("dp_off",DPSOFF)
@@ -128,7 +145,6 @@ class DeviceController:
             print(ERROR, e)
         return
     
-""" 
-ctrl=DeviceController("http://192.168.0.211:16628")
-ctrl.power_status()
-"""
+# 示例:
+# ctrl = DeviceController("http://192.168.0.211:16628")
+# ctrl.power_status()
