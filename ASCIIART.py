@@ -90,12 +90,12 @@ class ASCIIArtBuilder:
   |_| \__,_|_|  |_| |_|  \___/|_| |_|   |_|  \__,_|_|_|\___|\__,_|"""
 
         }
-    def call (self,text):
+    def call (self,text: str) ->str:
         # 返回指定文本的 ASCII ART    
         return self.Else.get(text, "not found")
 
 
-    def build(self, device, state):
+    def build(self, device: str, state: str) ->str:
         """
         將設備名稱、狀態名稱、操作符和開關狀態組合在一起，按行組合並返回。
 

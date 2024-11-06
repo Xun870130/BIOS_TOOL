@@ -24,7 +24,7 @@ class AutoInstaller:
     - ctrl (DeviceController): 裝置控制器，管理硬體開關和狀態檢查
     """
 
-    def __init__(self, ip="http://192.168.0.211:16628", iso_path=r'\\192.168.0.231\ABT-Dropbox\Common\ISO\Windows\OS_image\Win10_20H1_19041\OS.iso'):
+    def __init__(self, ip: str="http://192.168.0.211:16628", iso_path: str=r'\\192.168.0.231\ABT-Dropbox\Common\ISO\Windows\OS_image\Win10_20H1_19041\OS.iso'):
         """
         初始化。
 

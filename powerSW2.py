@@ -18,7 +18,7 @@ ERROR = text.call("error")
 
 class DeviceController:
     """負責管理設備控制命令的類，通過 HTTP API 發送指令控制設備開關"""
-    def __init__(self, IP_adr):
+    def __init__(self, IP_adr: str):
         self.IP_adr = IP_adr  # 設備 IP 地址
         # 設置 API 端點 URL
         self.endpoints = {
@@ -35,7 +35,7 @@ class DeviceController:
             "reset": f"{self.IP_adr}/arduino/gpio?func=reset"
             }   
 
-    def send_request(self, endpoint_key, ascii_art):
+    def send_request(self, endpoint_key: str, ascii_art: str) -> (str | None):
         """
         發送 HTTP GET 請求到指定的端點
         endpoint_key: 要調用的端點鍵
@@ -65,7 +65,7 @@ class DeviceController:
     def dp_on(self):
         self.send_request("dp_on", DPSON)
 
-    def reset(self):
+    def reset(self) -> (str | None):
         """
         執行PC重開機
         """
@@ -77,7 +77,7 @@ class DeviceController:
             print(ERROR, e)
             return None
 
-    def power_status(self):
+    def power_status(self) -> (str | None):
         """
         查詢電源狀態
         """

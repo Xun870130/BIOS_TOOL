@@ -7,7 +7,7 @@ class Programmer:
     用於管理芯片的檢測和燒錄過程。包含執行檢查芯片、執行燒錄命令並顯示結果的功能。
     """
 
-    def __init__(self, directory, bios_filename, ascii_art):
+    def __init__(self, directory: str, bios_filename: str, ascii_art: callable):
         """
         初始化 Programmer 類。
 
@@ -21,7 +21,7 @@ class Programmer:
         self.detect_command = ["dpcmd", "-d"]
         self.program_command = ["dpcmd", "-u", self.bios_path]
 
-    def run_command_and_check(self, command, success_keyword):
+    def run_command_and_check(self, command: list[str], success_keyword: str) ->bool:
         """
         執行指定的命令並檢查輸出中是否包含目標字串。
 
@@ -49,7 +49,7 @@ class Programmer:
             print(f"命令執行失敗: {e}")
             return False
 
-    def detect_chip(self):
+    def detect_chip(self) ->bool:
         """
         檢測芯片是否存在。
         使用 `run_command_and_check` 方法執行檢測命令。
@@ -59,7 +59,7 @@ class Programmer:
         print("正在檢測芯片...")
         return self.run_command_and_check(self.detect_command, "W25Q256FV chip size is 33554432 bytes")
 
-    def program_chip(self):
+    def program_chip(self) ->bool:
         """
         執行芯片燒錄過程。
         使用 `run_command_and_check` 方法執行燒錄命令。

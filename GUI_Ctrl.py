@@ -1,4 +1,3 @@
-
 import pyautogui
 import os
 import time
@@ -29,7 +28,7 @@ class ClientController:
         self.keyboard.release(Key.enter)
         time.sleep(1)
 
-    def start_client(self,type):
+    def start_client(self,type: str):
         """
         打開 Client:
         在 CMD 中執行客戶端的啟動命令，並設置字體平滑參數。
@@ -46,7 +45,7 @@ class ClientController:
         self.keyboard.release(Key.enter)
         time.sleep(5)
 
-    def locate_and_click(self, click, image_path, confidence=0.8):
+    def locate_and_click(self, click: int, image_path: str, confidence: float=0.8) -> bool:
         """
         根據圖片定位並點擊:
         使用指定的匹配度來定位螢幕上的圖片，並根據 `click` 的值執行不同的點擊操作。
@@ -70,7 +69,7 @@ class ClientController:
             return True
         return False
 
-    def mount_iso(self, iso_path):
+    def mount_iso(self, iso_path: str):
         """
         在 CMD 中掛載 ISO 檔案:
         
@@ -112,7 +111,7 @@ class ClientController:
         self.keyboard.press(Key.enter)
         self.keyboard.release(Key.enter)  
 
-    def wait_for_image(self, image_path, confidence=0.8, timeout=60, action=None,repeat=False):
+    def wait_for_image(self, image_path: str, confidence: float=0.8, timeout: int=60, action: callable=None,repeat: bool=False):
         """
         等待圖片出現在螢幕上並執行指定動作 (action):
         在 `timeout` 秒內反覆檢查螢幕是否出現指定圖片。若圖片找到並指定 `action`，

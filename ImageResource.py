@@ -21,7 +21,7 @@ class ImageResource:
             "wmount": "UI_image/Wmount.jpg"
         }
 
-    def get_image_path(self, image_name):
+    def get_image_path(self, image_name: str) -> str:
         """
         返回指定圖片的絕對路徑。
         
