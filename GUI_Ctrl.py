@@ -148,4 +148,3 @@ class ClientController:
                 return False
             # 延遲，避免頻繁檢查
             time.sleep(1)
-

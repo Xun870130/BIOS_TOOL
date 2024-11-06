@@ -8,25 +8,27 @@ import ImageResource
 
 class AutoInstaller:
     """
-    AutoInstaller 類：
-    此類用於控制 Java 客戶端的自動掛載和操作，包括開啟 KVM 和 AC、啟動 Java 客戶端、重啟系統、
-    掛載 ISO 映像檔等。
+    控制 Java 客戶端的自動掛載和操作。
 
-    屬性：
-    - ip (str): 控制裝置的 IP 地址，默認為 "http://192.168.0.211:16628"。
-    - iso_path (str): 系統映像檔的路徑，默認為 Win10 ISO 路徑，可通過參數修改。
-    - img_res (ImageResource): 用於管理圖像資源的對象，獲取 UI 操作中需要使用的圖像。
-    - gui_ctrl (JavaClientController): 控制 GUI 點擊和圖片檢測的控制器。
-    - keyboard (Controller): 鍵盤控制器，用於模擬鍵盤操作。
-    - ctrl (DeviceController): 硬體控制器，用於啟動/關閉設備，並檢查設備狀態。
+    主要功能包括：
+    - 開啟 KVM 和 AC。
+    - 啟動客戶端並進行圖形界面上的安裝操作。
+    - 支援 ISO 檔案的自動掛載。
+
+    屬性:
+    - ip (str): 控制裝置的 IP 地址
+    - iso_path (str): 系統映像檔的路徑
+    - img_res (ImageResource): 圖像資源管理，獲取 GUI 操作所需的圖像
+    - gui_ctrl (ClientController): 控制 GUI 點擊和圖片檢測
+    - keyboard (Controller): 鍵盤控制器，模擬鍵盤操作
+    - ctrl (DeviceController): 裝置控制器，管理硬體開關和狀態檢查
     """
-
     def __init__(self, ip="http://192.168.0.211:16628", iso_path=r'\\192.168.0.231\ABT-Dropbox\Common\ISO\Windows\OS_image\Win10_20H1_19041\OS.iso'):
         """
-        初始化 AutoInstaller 類。
+        初始化
 
-        :param ip: 控制裝置的 IP 地址，默認為 "http://192.168.0.211:16628"
-        :param iso_path: ISO 系統映像檔的路徑 。
+        :param ip: 控制設備的 IP 地址
+        :param iso_path: ISO 檔案的路徑
         """
         self.ip = ip
         self.iso_path = iso_path
