@@ -137,7 +137,7 @@ class AutoInstaller:
         time.sleep(1)
 
         cmd_err_img = self.img_res.get_image_path("CMDERROR")
-        self.gui_ctrl.wait_for_image(cmd_err_img, repeat=True, action=self.gui_ctrl.restart_system)
+        self.gui_ctrl.wait_for_image(cmd_err_img, repeat=True, timeout=20, action=self.gui_ctrl.restart_system)
         
         # 等待 UEFI 畫面後執行 UEFI 操作
         uefi_img = self.img_res.get_image_path("UEFI")
