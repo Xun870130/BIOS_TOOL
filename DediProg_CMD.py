@@ -1,6 +1,6 @@
 import subprocess
 import os
-
+import sys
 class Programmer:
     """
     Programmer 類:
@@ -15,8 +15,14 @@ class Programmer:
         :param bios_filename: BIOS 檔案的名稱，用於燒錄
         :param ascii_art: ASCIIArtBuilder 對象，用於顯示 ASCII 輸出消息
         """
+        if hasattr(sys, '_MEIPASS'):
+            # 如果在 PyInstaller 打包后的环境中，使用 _MEIPASS 获取路径
+            self.current_directory = sys._MEIPASS
+        else:
+            # 否则，使用标准的当前工作目录
+            self.current_directory = os.getcwd()
         self.directory = directory
-        self.bios_path = os.path.join(os.getcwd(), "BIOS", bios_filename)
+        self.bios_path = os.path.join(self.current_directory, "BIOS", bios_filename)
         self.ascii_art = ascii_art
         self.detect_command = ["dpcmd", "-d"]
         self.program_command = ["dpcmd", "-u", self.bios_path]

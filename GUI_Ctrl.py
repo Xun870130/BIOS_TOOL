@@ -1,6 +1,7 @@
 import pyautogui
 import os
 import time
+import sys
 from pynput.keyboard import Key, Controller
 
 class ClientController:
@@ -11,7 +12,12 @@ class ClientController:
     """
     def __init__(self):
         self.keyboard = Controller()
-        self.current_directory = os.getcwd()
+        if hasattr(sys, '_MEIPASS'):
+            # 如果在 PyInstaller 打包后的环境中，使用 _MEIPASS 获取路径
+            self.current_directory = sys._MEIPASS
+        else:
+            # 否则，使用标准的当前工作目录
+            self.current_directory = os.getcwd()
 
     def open_cmd(self):
         """
@@ -127,18 +133,24 @@ class ClientController:
         """
         start_time = time.time()
         while True:
-            location = pyautogui.locateOnScreen(image_path, confidence=confidence)
-            if location is not None:
-                # 如果有指定動作，則執行
-                if action:
-                    action()
-                    time.sleep(3)
-                    location = pyautogui.locateOnScreen(image_path, confidence=confidence)
-                    if location is None:
-                        print(image_path)
+            try:
+                location = pyautogui.locateOnScreen(image_path, confidence=confidence)
+                if location is not None:
+                    # 如果有指定動作，則執行
+                    if action:
+                        action()
+                        time.sleep(3)
+                        try:
+                            location = pyautogui.locateOnScreen(image_path, confidence=confidence)
+                            if location is None:
+                                # 圖片消失後跳出迴圈
+                                break
+                        except pyautogui.ImageNotFoundException:
+                            break   
+                    if not repeat:  
                         return True
-                if not repeat:  
-                    return True
+            except pyautogui.ImageNotFoundException:
+                pass
             # 計算已經過時間
             elapsed_time = time.time() - start_time
             print(f"\r Waiting . . . {int(elapsed_time)} sec", end="")

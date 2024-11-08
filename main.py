@@ -7,8 +7,8 @@ import ASCIIART
 import DediProg_CMD
 
 # 初始化自動安裝器，可以選擇 Windows 或 Java 版本
-installer = WindowsClient.AutoInstaller()
-# installer = JavaClient.AutoInstaller() # 使用 Java 安裝器
+# installer = WindowsClient.AutoInstaller()
+installer = JavaClient.AutoInstaller() # 使用 Java 安裝器
 
 # 設置設備控制器，並提供設備的控制端點 URL
 controller = sw.DeviceController("http://192.168.0.211:16628")
@@ -20,7 +20,7 @@ bios_filename = "IceLake_U_3.bin" # BIOS 檔案名稱
 programmer = DediProg_CMD.Programmer(directory, bios_filename, ascii_art)
 
 
-# 執行電源和 BIOS 燒錄程序的完整流程
+#執行電源和 BIOS 燒錄程序的完整流程
 controller.ACoffcheck()
 controller.dp_on()               # 打開 DP
 programmer.run()                 # 執行 BIOS 燒錄

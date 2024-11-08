@@ -92,7 +92,7 @@ class AutoInstaller:
 
         # 等待進入下一步操作的畫面
         scr_img = self.img_res.get_image_path("scr")
-        self.gui_ctrl.wait_for_image(scr_img, timeout=90)
+        self.gui_ctrl.wait_for_image(scr_img, timeout=180)
 
         # 定位並點擊 UI 元素進行掛載 ISO
         vm9000_img = self.img_res.get_image_path("VM9000")

@@ -1,8 +1,14 @@
 import os
+import sys
 
 class ImageResource:
     def __init__(self):
-        self.current_directory = os.getcwd()
+        if hasattr(sys, '_MEIPASS'):
+            # 如果在 PyInstaller 打包后的环境中，使用 _MEIPASS 获取路径
+            self.current_directory = sys._MEIPASS
+        else:
+            # 否则，使用标准的当前工作目录
+            self.current_directory = os.getcwd()
         self.image_paths = {
             "dropdown": "UI_image/dropdown.png",
             "pin9000": "UI_image/pin9000.png",
