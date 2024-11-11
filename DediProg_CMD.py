@@ -1,6 +1,8 @@
 import subprocess
 import os
 import sys
+import time
+
 class Programmer:
     """
     Programmer 類:
@@ -44,8 +46,6 @@ class Programmer:
                 if output == '' and process.poll() is not None:
                     break
                 if output:
-                    print(output.strip())  # 即時輸出到控制台
-
                     # 判斷是否找到目標字串
                     if success_keyword in output:
                         success = True
