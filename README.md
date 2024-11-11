@@ -27,6 +27,7 @@
 ```bash
 python -m venv py-env
 ```
+
 2. 啟動虛擬環境
 Windows:
 ```bash
