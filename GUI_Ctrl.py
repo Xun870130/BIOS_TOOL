@@ -51,7 +51,7 @@ class ClientController:
         self.keyboard.release(Key.enter)
         time.sleep(5)
 
-    def locate_and_click(self, click: int, image_path: str, confidence: float=0.8) -> bool:
+    def locate_and_click(self, click: int, image_path: str, confidence: float=0.8, delay: float=0) -> bool:
         """
         根據圖片定位並點擊:
         使用指定的匹配度來定位螢幕上的圖片，並根據 `click` 的值執行不同的點擊操作。
@@ -59,6 +59,7 @@ class ClientController:
         :param click: 點擊操作類型 (1: 單擊, 2: 雙擊, 3: 右鍵點擊)
         :param image_path: 圖片的檔案路徑
         :param confidence: 圖片匹配的信心度，範圍為 0.0 - 1.0 (默認為 0.8)
+        :param delay: 操作執行完成後，等待下一個判讀圖片刷新，預設為0秒
         :return: 成功找到並點擊圖片則返回 True，否則返回 False
         """
         self.click=click
@@ -66,10 +67,13 @@ class ClientController:
         if location:
             if click==1:
                 pyautogui.click(pyautogui.center(location))
+                time.sleep(delay)
             elif click==2:
                 pyautogui.doubleClick(pyautogui.center(location))
+                time.sleep(delay)
             elif click==3:
                 pyautogui.rightClick(pyautogui.center(location))
+                time.sleep(delay)
             else:
                 print(image_path,"error")
             return True

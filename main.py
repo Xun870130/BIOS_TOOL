@@ -7,8 +7,8 @@ import ASCIIART
 import DediProg_CMD
 
 # 初始化自動安裝器，可以選擇 Windows 或 Java 版本
-# installer = WindowsClient.AutoInstaller()
-installer = JavaClient.AutoInstaller() # 使用 Java 安裝器
+installer = WindowsClient.AutoInstaller()
+# installer = JavaClient.AutoInstaller() # 使用 Java 安裝器
 
 # 設置設備控制器，並提供設備的控制端點 URL
 controller = sw.DeviceController("http://192.168.0.211:16628")

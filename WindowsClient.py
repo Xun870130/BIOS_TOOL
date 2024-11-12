@@ -80,10 +80,8 @@ class AutoInstaller:
 
         # 點擊各個圖片元素
         time.sleep(1.5)
-        self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9)
-        time.sleep(1.5)
-        self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8)
-        time.sleep(2)
+        self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9, delay=1.5)
+        self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
         
         # 反覆點擊 viewer 直到圖片消失
         def click_viewer():
@@ -103,25 +101,19 @@ class AutoInstaller:
         cmd_img = self.img_res.get_image_path("CMD")
 
         # 執行掛載操作
-        self.gui_ctrl.locate_and_click(1, vm9000_img, confidence=0.8)
-        time.sleep(1)
-        self.gui_ctrl.locate_and_click(1, add_img, confidence=0.6)
-        time.sleep(2)
-        self.gui_ctrl.locate_and_click(1, isofile_img, confidence=0.6)
-        time.sleep(1)
+        self.gui_ctrl.locate_and_click(1, vm9000_img, confidence=0.8, delay=1)
+        self.gui_ctrl.locate_and_click(1, add_img, confidence=0.6, delay=2)
+        self.gui_ctrl.locate_and_click(1, isofile_img, confidence=0.6, delay=1)
         self.gui_ctrl.mount_iso(self.iso_path)
-        self.gui_ctrl.locate_and_click(1, mount_img, confidence=0.8)
-        time.sleep(5)
-        self.gui_ctrl.locate_and_click(3, windows_img, confidence=0.8)
-        time.sleep(1)
+        self.gui_ctrl.locate_and_click(1, mount_img, confidence=0.8, delay=5)
+        self.gui_ctrl.locate_and_click(3, windows_img, confidence=0.8, delay=1)
         
         # 定位 CMD 圖片，並進行雙擊
         cmd_location = pyautogui.locateOnScreen(cmd_img, confidence=0.8)
         if cmd_location:
             pyautogui.moveTo(pyautogui.center(cmd_location))
         time.sleep(2)
-        self.gui_ctrl.locate_and_click(2, cmd_img, confidence=0.8)
-        time.sleep(1)
+        self.gui_ctrl.locate_and_click(2, cmd_img, confidence=0.8, delay=1)
         
         # 釋放 Win 和 Shift 鍵
         self.keyboard.release(Key.cmd) 
