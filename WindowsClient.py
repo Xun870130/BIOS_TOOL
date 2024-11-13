@@ -93,22 +93,13 @@ class AutoInstaller:
         self.gui_ctrl.wait_for_image(scr_img, timeout=180)
 
         # 定位並點擊 UI 元素進行掛載 ISO
-        vm9000_img = self.img_res.get_image_path("VM9000")
-        add_img = self.img_res.get_image_path("wadd")
-        isofile_img = self.img_res.get_image_path("wiso")
-        mount_img = self.img_res.get_image_path("wmount")
         windows_img = self.img_res.get_image_path("windows")
         cmd_img = self.img_res.get_image_path("CMD")
 
         # 執行掛載操作
-        self.gui_ctrl.locate_and_click(1, vm9000_img, confidence=0.8, delay=1)
-        self.gui_ctrl.locate_and_click(1, add_img, confidence=0.6, delay=2)
-        self.gui_ctrl.locate_and_click(1, isofile_img, confidence=0.6, delay=1)
         self.gui_ctrl.mount_iso(self.iso_path)
-        self.gui_ctrl.locate_and_click(1, mount_img, confidence=0.8, delay=5)
-        self.gui_ctrl.locate_and_click(3, windows_img, confidence=0.8, delay=1)
         
-        # 定位 CMD 圖片，並進行雙擊
+        self.gui_ctrl.locate_and_click(3, windows_img, confidence=0.8, delay=1)
         cmd_location = pyautogui.locateOnScreen(cmd_img, confidence=0.8)
         if cmd_location:
             pyautogui.moveTo(pyautogui.center(cmd_location))
