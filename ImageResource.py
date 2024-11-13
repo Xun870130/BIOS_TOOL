@@ -24,10 +24,14 @@ class ImageResource:
             "wiso": "UI_image/Wiosfile.jpg",
             "UEFI": "UI_image/UEFI.jpg",
             "scr": "UI_image/Screem.jpg",
-            "wmount": "UI_image/Wmount.jpg"
+            "wmount": "UI_image/Wmount.jpg",
+            "boot_failed": "UI_image/boot_failed.jpg",
+            "esc": "UI_image/esc.png",
+            "fast_boot_disable": "UI_image/fast_boot_disable.jpg",
+            "usb_device": "UI_image/usb_device.jpg"
         }
 
-    def get_image_path(self, image_name: str) -> str:
+    def  get_image_path(self, image_name: str) -> str:
         """
         返回指定圖片的絕對路徑。
         

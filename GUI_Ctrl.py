@@ -51,7 +51,7 @@ class ClientController:
         self.keyboard.release(Key.enter)
         time.sleep(5)
 
-    def locate_and_click(self, click: int, image_path: str, confidence: float=0.8, delay: float=0) -> bool:
+    def locate_and_click(self, click: int, image_path: str, confidence: float=0.8,delay: float=0) -> bool:
         """
         根據圖片定位並點擊:
         使用指定的匹配度來定位螢幕上的圖片，並根據 `click` 的值執行不同的點擊操作。
@@ -73,7 +73,6 @@ class ClientController:
                 time.sleep(delay)
             elif click==3:
                 pyautogui.rightClick(pyautogui.center(location))
-                time.sleep(delay)
             else:
                 print(image_path,"error")
             return True
@@ -99,6 +98,36 @@ class ClientController:
         self.keyboard.type('shutdown /r /fw /t 0')
         self.keyboard.press(Key.enter)
         self.keyboard.release(Key.enter)
+
+    def press_and_release(self, K, delay: float=0, do: int=0):
+        for i in range(do,0,-1):
+            self.keyboard.press(K)
+            self.keyboard.release(K)
+            time.sleep(delay) 
+
+    def fast_boot_open(self):
+        #setup utility
+        self.press_and_release(Key.right,delay=0.5,do=2)
+        self.press_and_release(Key.down,delay=0.5)
+        self.press_and_release(Key.enter,delay=0.5)
+        #enter boot list
+        self.press_and_release(Key.down,delay=0.5,do=4)
+        self.press_and_release(Key.right,delay=0.5)
+        #select fast os boot
+        self.press_and_release(Key.down,delay=0.5,do=10)
+        self.press_and_release(Key.enter,delay=0.5)
+        #判斷是否需要設定
+        locate=pyautogui.locateOnScreen()
+        if locate is not None:
+            self.press_and_release(Key.f10,delay=0.5)
+            self.press_and_release(Key.enter,delay=0.5)
+        else:
+            self.press_and_release(Key.down,delay=0.5)
+            self.press_and_release(Key.enter,delay=0.5)
+        #press ESC restart UEFI
+         
+    
+        
 
     def UEFI(self):
         """
