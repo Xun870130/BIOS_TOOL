@@ -133,10 +133,11 @@ class ClientController:
         except pyautogui.ImageNotFoundException:
                  pass
         #press ESC restart UEFI
+        time.sleep(1)
         start = time.time()
         while True:
             try:
-                locate = pyautogui.locateOnScreen(self.get_path.get_image_path("esc"))
+                locate = pyautogui.locateOnScreen(self.get_path.get_image_path("esc"),confidence=0.8)
                 if locate is None:
                     self.keyboard.press(Key.esc)
                     print('in 143 line')
@@ -222,8 +223,7 @@ class ClientController:
             # 延遲，避免頻繁檢查
             time.sleep(1)
 
-g=ClientController()
-time.sleep(3)
-g.fast_boot_open()
+
+
 
 
