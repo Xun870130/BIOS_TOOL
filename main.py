@@ -21,10 +21,10 @@ programmer = DediProg_CMD.Programmer(directory, bios_filename, ascii_art)
 
 
 #執行電源和 BIOS 燒錄程序的完整流程
-controller.ACoffcheck()
-controller.dp_on()               # 打開 DP
-programmer.run()                 # 執行 BIOS 燒錄
-controller.dp_off()              # 關閉 DP
-controller.cmos_switch()         # 重置 CMOS
-controller.AConcheck()           # 打開 AC 並檢查狀態
+# controller.ACoffcheck()
+# controller.dp_on()               # 打開 DP
+# programmer.run()                 # 執行 BIOS 燒錄
+# controller.dp_off()              # 關閉 DP
+# controller.cmos_switch()         # 重置 CMOS
+# controller.AConcheck()           # 打開 AC 並檢查狀態
 installer.start_installation()   # 開始安裝操作系統

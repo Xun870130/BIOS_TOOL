@@ -11,7 +11,8 @@ class ClientController:
     用於控制客戶端的自動化啟動和 GUI 操作，包括打開 CMD、啟動 Java 客戶端、掛載 ISO 文件，
     以及控制圖片檢測和鍵盤模擬操作。
     """
-    def __init__(self):
+    def __init__(self, iso_path: str=r'\\192.168.0.231\ABT-Dropbox\Common\ISO\Windows\OS_image\Win10_20H1_19041\OS.iso'):
+        self.iso_path = iso_path
         self.get_path = ImageResource.ImageResource()
         self.keyboard = Controller()
         if hasattr(sys, '_MEIPASS'):
@@ -76,20 +77,27 @@ class ClientController:
             return True
         return False
 
-    def mount_iso(self, iso_path: str):
+    def mount_iso(self, type: str):
         """
         在 usb_device 中掛載 ISO 檔案:
         
-        :param iso_path: ISO 檔案的完整路徑
+        :param type: 客戶端類型(windows/java)
         """
-        vm9000_img = self.get_path.get_image_path("VM9000")
-        add_img = self.get_path.get_image_path("add")
-        isofile_img = self.get_path.get_image_path("isofile")
-        mount_img = self.get_path.get_image_path("mount")
+        if type == "java":
+            vm9000_img = self.get_path.get_image_path("VM9000")
+            add_img = self.get_path.get_image_path("add")
+            isofile_img = self.get_path.get_image_path("isofile")
+            mount_img = self.get_path.get_image_path("mount")
+        elif type == "windows":
+            vm9000_img = self.get_path.get_image_path("VM9000")
+            add_img = self.get_path.get_image_path("wadd")
+            isofile_img = self.get_path.get_image_path("wiso")
+            mount_img = self.get_path.get_image_path("wmount") 
+
         self.locate_and_click(1, vm9000_img, confidence=0.8, delay=1)
         self.locate_and_click(1, add_img, confidence=0.6, delay=2)
         self.locate_and_click(1, isofile_img, confidence=0.6, delay=1)
-        self.keyboard.type(iso_path)
+        self.keyboard.type(self.iso_path)
         self.locate_and_click(1, mount_img, confidence=0.8, delay=5)
         self.press_and_release(Key.enter,delay=1)
 
@@ -102,12 +110,12 @@ class ClientController:
         self.keyboard.type('shutdown /r /fw /t 0')
         self.press_and_release(Key.enter,delay=0.5)
 
-    def press_and_release(self, K, delay: float=0, do: int=1):
+    def press_and_release(self, press_Key, delay: float=0, do: int=1):
         for i in range(do,0,-1):
-            self.keyboard.tap(K)
+            self.keyboard.tap(press_Key)
             time.sleep(delay) 
 
-    def fast_boot_open(self):
+    def fast_boot_close(self):
         #setup utility
         self.press_and_release(Key.right,delay=1,do=2)
         self.press_and_release(Key.down,delay=1)
@@ -139,32 +147,18 @@ class ClientController:
             try:
                 locate = pyautogui.locateOnScreen(self.get_path.get_image_path("esc"),confidence=0.8)
                 if locate is None:
-                    self.keyboard.press(Key.esc)
+                    self.press_and_release(Key.esc,delay=0.1)
                     print('in 143 line')
                 else:
-                    self.keyboard.release(Key.esc)
                     print('release')
                     break
             except pyautogui.ImageNotFoundException:
-                self.keyboard.release(Key.esc)
                 pass
             if time.time()-start > 20 :
                 print('times up,stop press esc key')
-                self.keyboard.release(Key.esc)
                 break
     
-        
-
-    def UEFI(self):
-        """
-        進入 UEFI 模式:
-        模擬按鍵以進入 UEFI 模式並選擇啟動選項。
-        """
-        time.sleep(5)
-        #enter boot manager
-        self.press_and_release(Key.right, delay=0.1)
-        self.press_and_release(Key.enter, delay=0.1)
-        #select usb device
+    def select_usb_device(self):
         try:
             locate = pyautogui.locateOnScreen(self.get_path.get_image_path("usb_device"),confidence=0.8)
             if locate is not None:
@@ -173,13 +167,44 @@ class ClientController:
                 self.press_and_release(Key.enter)
             else:
                 #mount iso again & select device
-                self.mount_iso()
+                self.mount_iso(self.type)
                 time.sleep(5)
                 self.press_and_release(Key.down,delay=0.1)
                 self.press_and_release(Key.enter,delay=4)
                 self.press_and_release(Key.enter)        
         except pyautogui.ImageNotFoundException:
             pass
+
+    def UEFI(self, type: str):
+        """
+        進入 UEFI 模式:
+        模擬按鍵以進入 UEFI 模式並選擇啟動選項。
+
+        :param type: 客戶端類型(windows/java)
+        """
+        self.type = type
+        self.fast_boot_close()
+        self.wait_for_image(self.get_path.get_image_path("UEFI"),confidence=0.8)
+        #enter boot manager
+        self.press_and_release(Key.right, delay=0.1)
+        self.press_and_release(Key.enter, delay=0.1)
+        
+        self.select_usb_device()
+ 
+        try:
+            locate = pyautogui.locateOnScreen(self.get_path.get_image_path("boot_failed"),confidence=0.8)
+            if locate is not None:
+                self.mount_iso(self.type)
+                #enter boot manager
+                self.press_and_release(Key.right, delay=0.1)
+                self.press_and_release(Key.enter, delay=0.1)
+                self.select_usb_device()
+            else:
+                #等待完成判斷，目前還沒想到
+                pass
+        except pyautogui.ImageNotFoundException:
+            pass        
+                
     def wait_for_image(self, image_path: str, confidence: float=0.8, timeout: int=60, action: callable=None,repeat: bool=False):
         """
         等待圖片出現在螢幕上並執行指定動作 (action):
@@ -222,8 +247,3 @@ class ClientController:
                 return False
             # 延遲，避免頻繁檢查
             time.sleep(1)
-
-
-
-
-
