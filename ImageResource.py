@@ -28,7 +28,8 @@ class ImageResource:
             "boot_failed": "UI_image/boot_failed.jpg",
             "esc": "UI_image/esc.png",
             "fast_boot_disable": "UI_image/fast_boot_disable.jpg",
-            "usb_device": "UI_image/usb_device.jpg"
+            "usb_device": "UI_image/usb_device.jpg",
+            "boot_failed": "UI_image/boot_failed"
         }
 
     def  get_image_path(self, image_name: str) -> str:
