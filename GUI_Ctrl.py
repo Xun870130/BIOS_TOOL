@@ -78,6 +78,7 @@ class ClientController:
         return False
 
     def mount_iso(self, type: str):
+        self.type=type
         """
         在 usb_device 中掛載 ISO 檔案:
         
@@ -98,8 +99,9 @@ class ClientController:
         self.locate_and_click(1, add_img, confidence=0.6, delay=2)
         self.locate_and_click(1, isofile_img, confidence=0.6, delay=1)
         self.keyboard.type(self.iso_path)
-        self.locate_and_click(1, mount_img, confidence=0.8, delay=5)
         self.press_and_release(Key.enter,delay=1)
+        self.locate_and_click(1, mount_img, confidence=0.8, delay=5)
+ 
 
     def restart_system(self):
         """
@@ -159,30 +161,34 @@ class ClientController:
                 break
     
     def select_usb_device(self):
+        time.sleep(1)
         try:
             locate = pyautogui.locateOnScreen(self.get_path.get_image_path("usb_device"),confidence=0.8)
+            
             if locate is not None:
+                time.sleep(1)
                 self.press_and_release(Key.down,delay=0.1)
-                self.press_and_release(Key.enter,delay=4)
+                self.press_and_release(Key.enter,delay=2)
                 self.press_and_release(Key.enter)
+                print("170-if")
             else:
                 #mount iso again & select device
                 self.mount_iso(self.type)
                 time.sleep(5)
                 self.press_and_release(Key.down,delay=0.1)
-                self.press_and_release(Key.enter,delay=4)
-                self.press_and_release(Key.enter)        
+                self.press_and_release(Key.enter,delay=2)
+                self.press_and_release(Key.enter)   
+                print("178-else")     
         except pyautogui.ImageNotFoundException:
             pass
 
-    def UEFI(self, type: str):
+    def UEFI(self):
         """
         進入 UEFI 模式:
         模擬按鍵以進入 UEFI 模式並選擇啟動選項。
 
         :param type: 客戶端類型(windows/java)
         """
-        self.type = type
         self.fast_boot_close()
         self.wait_for_image(self.get_path.get_image_path("UEFI"),confidence=0.8)
         #enter boot manager
@@ -200,6 +206,7 @@ class ClientController:
                 self.press_and_release(Key.enter, delay=0.1)
                 self.select_usb_device()
             else:
+                self.press_and_release(Key.enter)
                 #等待完成判斷，目前還沒想到
                 pass
         except pyautogui.ImageNotFoundException:
@@ -227,7 +234,6 @@ class ClientController:
                     # 如果有指定動作，則執行
                     if action:
                         action()
-                        time.sleep(3)
                         try:
                             location = pyautogui.locateOnScreen(image_path, confidence=confidence)
                             if location is None:
@@ -236,7 +242,7 @@ class ClientController:
                         except pyautogui.ImageNotFoundException:
                             break   
                     if not repeat:  
-                        return True
+                        return True  
             except pyautogui.ImageNotFoundException:
                 pass
             # 計算已經過時間

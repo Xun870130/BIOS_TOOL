@@ -29,7 +29,7 @@ class ImageResource:
             "esc": "UI_image/esc.png",
             "fast_boot_disable": "UI_image/fast_boot_disable.jpg",
             "usb_device": "UI_image/usb_device.jpg",
-            "boot_failed": "UI_image/boot_failed"
+            "boot_failed": "UI_image/boot_failed.jpg"
         }
 
     def  get_image_path(self, image_name: str) -> str:
@@ -44,4 +44,5 @@ class ImageResource:
         if relative_path:
             return os.path.join(self.current_directory, relative_path)
         else:
+            print(f"No image found for key: {image_name}")
             raise ValueError(f"No image found for key: {image_name}")

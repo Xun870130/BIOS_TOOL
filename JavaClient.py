@@ -77,8 +77,12 @@ class AutoInstaller:
         viewer_img = self.img_res.get_image_path("viewer")
 
         # 點擊各個圖片元素
-        time.sleep(1.5)
-        self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9, delay=1.5)
+        time.sleep(2)
+        def dropdown():
+            self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9,delay=0)
+            
+        self.gui_ctrl.wait_for_image(dropdown_img,action=dropdown,repeat=True)
+
         self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
         
         # 反覆點擊 viewer 直到圖片消失
