@@ -45,8 +45,7 @@ class AutoInstaller:
         # 打開 KVM 和 AC，並檢查電源狀態
         self.ctrl.kvm_on()
         self.ctrl.ac_on()
-        time.sleep(20)
-        
+        time.sleep(10)
         try:
             status = self.ctrl.power_status()
             if "true" in status:
@@ -59,12 +58,11 @@ class AutoInstaller:
         # 打開 CMD，並啟動 Java 客戶端
         self.gui_ctrl.open_cmd()
         self.gui_ctrl.start_client('windows')
+
         self.ctrl.reset()  # 系統重啟
-        
-        # 執行 GUI 操作
-        self._perform_gui_actions()
-        time.sleep(1)
-        
+
+        self._perform_gui_actions()# 執行 GUI 操作
+        time.sleep(1)        
         # 處理重啟流程
         self._handle_restart()
 
@@ -75,18 +73,17 @@ class AutoInstaller:
         """
         dropdown_img = self.img_res.get_image_path("dropdown")
         pin_img = self.img_res.get_image_path("pin9000")
-        viewer_img = self.img_res.get_image_path("viewer")
+        viewer_img = self.img_res.get_image_path("viewer")      
 
-        # 反覆點擊 dropdown 直到圖片消失
-        time.sleep(2)
-        def dropdown():
+        def dropdown():# 反覆點擊 dropdown 直到圖片消失
             self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9)
         self.gui_ctrl.wait_for_image(dropdown_img,action=dropdown,repeat=True)
 
-        self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
-        
-        # 反覆點擊 viewer 直到圖片消失
-        def click_viewer():
+        def pin():# 反覆點擊 pin 直到圖片消失
+            self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
+        self.gui_ctrl.wait_for_image(pin_img,action=pin,repeat=True)      
+
+        def click_viewer():# 反覆點擊 viewer 直到圖片消失
             self.gui_ctrl.locate_and_click(2, viewer_img, confidence=0.8)
         self.gui_ctrl.wait_for_image(viewer_img, action=click_viewer, repeat=True)
 
@@ -100,18 +97,14 @@ class AutoInstaller:
 
         # 執行掛載操作
         self.gui_ctrl.mount_iso("windows")
-        
         self.gui_ctrl.locate_and_click(3, windows_img, confidence=0.7, delay=1)
         cmd_location = pyautogui.locateOnScreen(cmd_img, confidence=0.8)
         if cmd_location:
             pyautogui.moveTo(pyautogui.center(cmd_location))
+        else:
+            pass
         time.sleep(2)
         self.gui_ctrl.locate_and_click(2, cmd_img, confidence=0.8, delay=1)
-        
-        # 釋放 Win 和 Shift 鍵
-        self.keyboard.release(Key.cmd) 
-        self.keyboard.release(Key.shift)
-        time.sleep(3)
 
     def _handle_restart(self):
         """

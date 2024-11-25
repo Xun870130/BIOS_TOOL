@@ -21,7 +21,7 @@ class ImageResource:
             "windows": "UI_image/windows.jpg",
             "CMD": "UI_image/CMD.jpg",
             "wadd": "UI_image/Wadd.jpg",
-            "wiso": "UI_image/Wiosfile.jpg",
+            "wiso": "UI_image/Wisofile.jpg",
             "UEFI": "UI_image/UEFI.jpg",
             "scr": "UI_image/Screem.jpg",
             "wmount": "UI_image/Wmount.jpg",
@@ -29,7 +29,7 @@ class ImageResource:
             "esc": "UI_image/esc.png",
             "fast_boot_disable": "UI_image/fast_boot_disable.jpg",
             "usb_device": "UI_image/usb_device.jpg",
-            "boot_failed": "UI_image/boot_failed.jpg"
+            "boot_manager": "UI_image/boot_manager.jpg"
         }
 
     def  get_image_path(self, image_name: str) -> str:

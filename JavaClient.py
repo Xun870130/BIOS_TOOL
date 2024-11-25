@@ -44,7 +44,7 @@ class AutoInstaller:
         # 打開 KVM 和 AC，並檢查電源狀態
         self.ctrl.kvm_on()
         self.ctrl.ac_on()
-        time.sleep(20)
+        time.sleep(10)
         
         try:
             status = self.ctrl.power_status()
