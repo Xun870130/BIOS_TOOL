@@ -34,18 +34,29 @@ class ClientController:
         self.keyboard.type('cmd')
         self.press_and_release(Key.enter,delay=1)
 
-    def start_client(self,type: str):
+    def start_client(self,type: str,ip: str):
         """
         打開 Client:
         在 CMD 中執行客戶端的啟動命令，並設置字體平滑參數。
         - type : java/windows
         """
-        if type == 'java':
-            command = rf'"{self.current_directory}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory}\JavaClient.jar" 192.168.10.211:9000 -u administrator -p password '
-        elif type == 'windows':
-            command = rf' "C:\__RVS_Execute_Software__\Winclient\WinClient.exe" 192.168.10.211:9000 -u administrator -p password '
+
+        if ip == "http://192.168.0.211:16628":
+            if type == 'java':
+                command = rf'"{self.current_directory}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory}\JavaClient.jar" 192.168.10.211:9000 -u administrator -p password '
+            elif type == 'windows':
+                command = rf' "C:\__RVS_Execute_Software__\Winclient\WinClient.exe" 192.168.10.211:9000 -u administrator -p password '
+            else:
+                print('path error')
+        elif ip == "http://192.168.0.213:16628":
+            if type == 'java':
+                command = rf'"{self.current_directory}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory}\JavaClient.jar" 192.168.10.213:9000 -u administrator -p password '
+            elif type == 'windows':
+                command = rf' "C:\__RVS_Execute_Software__\Winclient\WinClient.exe" 192.168.10.213:9000 -u administrator -p password '
+            else:
+                print('path error') 
         else:
-            print('path error')
+            print("ip error")
         self.keyboard.type(command)
         self.press_and_release(Key.enter,delay=5)
 

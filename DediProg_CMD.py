@@ -9,7 +9,7 @@ class Programmer:
     用於管理芯片的檢測和燒錄過程。包含執行檢查芯片、執行燒錄命令並顯示結果的功能。
     """
 
-    def __init__(self, directory: str, bios_filename: str, ascii_art: callable):
+    def __init__(self, directory: str, bios_path: str, ascii_art: callable):
         """
         初始化 Programmer 類。
 
@@ -24,7 +24,7 @@ class Programmer:
             # 否则，使用标准的当前工作目录
             self.current_directory = os.getcwd()
         self.directory = directory
-        self.bios_path = os.path.join(self.current_directory, "BIOS", bios_filename)
+        self.bios_path = bios_path
         self.ascii_art = ascii_art
         self.detect_command = ["dpcmd", "-d"]
         self.program_command = ["dpcmd", "-u", self.bios_path]
@@ -62,8 +62,14 @@ class Programmer:
         
         :return: 如果檢測成功返回 True，否則返回 False
         """
+        if self.bios_path == "C:\__RVS_Execute_Software__\GoldenBIOS\IceLake_U\IceLake_U_3.bin":
+            check = "W25Q256FV chip size is 33554432 bytes"
+        elif self.bios_path == "C:\__RVS_Execute_Software__\GoldenBIOS\WhiskeyLake_U\WhiskeyLake_U_3.bin":
+            check = "W25Q256FV chip size is 0x02000000 bytes"
+        else:
+            pass
         print("正在檢測芯片...")
-        return self.run_command_and_check(self.detect_command, "W25Q256FV chip size is 33554432 bytes")
+        return self.run_command_and_check(self.detect_command, check)
 
     def program_chip(self) ->bool:
         """

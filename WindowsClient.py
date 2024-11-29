@@ -24,7 +24,7 @@ class AutoInstaller:
     - ctrl (DeviceController): 裝置控制器，管理硬體開關和狀態檢查
     """
 
-    def __init__(self, ip: str="http://192.168.0.211:16628"):
+    def __init__(self, ip: str):
         """
         初始化。
 
@@ -57,7 +57,7 @@ class AutoInstaller:
 
         # 打開 CMD，並啟動 Java 客戶端
         self.gui_ctrl.open_cmd()
-        self.gui_ctrl.start_client('windows')
+        self.gui_ctrl.start_client('windows',ip=self.ip)
 
         self.ctrl.reset()  # 系統重啟
 

@@ -23,7 +23,7 @@ class AutoInstaller:
     - keyboard (Controller): 鍵盤控制器，模擬鍵盤操作
     - ctrl (DeviceController): 裝置控制器，管理硬體開關和狀態檢查
     """
-    def __init__(self, ip: str="http://192.168.0.211:16628"):
+    def __init__(self, ip: str):
         """
         初始化
 
@@ -57,7 +57,7 @@ class AutoInstaller:
 
         # 打開 CMD，並啟動 Java 客戶端
         self.gui_ctrl.open_cmd()
-        self.gui_ctrl.start_client('java')
+        self.gui_ctrl.start_client('java',ip=self.ip)
         self.ctrl.reset()  # 系統重啟
         
         # 執行 GUI 操作

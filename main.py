@@ -6,17 +6,21 @@ import ASCIIART
 import DediProg_CMD
 
 def main():
-    # 設定命令列參數解析
+    # 設定命令
     parser = argparse.ArgumentParser(description="自動安裝程序")
-    parser.add_argument("ip", help="設備控制器 IP，例如：http://192.168.0.211:16628")
-    parser.add_argument("bios_filename", help="BIOS 檔案名稱，例如：IceLake_U_3.bin")
+    parser.add_argument("ip", help="設備控制器 IP，例如192.168.0.211")
     parser.add_argument("type", choices=["win", "java"], help="選擇安裝器類型：win 或 java")
-
-    # 解析輸入參數
     args = parser.parse_args()
-    ip = args.ip
-    bios_filename = args.bios_filename
+    ip = f"http://{args.ip}:16628"
     installer_type = args.type
+
+    #設定BIOS檔案
+    if ip == "http://192.168.0.213:16628":
+        bios_path = r"C:\__RVS_Execute_Software__\GoldenBIOS\WhiskeyLake_U\WhiskeyLake_U_3.bin"
+    elif ip == "http://192.168.0.211:16628":
+        bios_path = r"C:\__RVS_Execute_Software__\GoldenBIOS\IceLake_U\IceLake_U_3.bin"
+    else :
+        raise ValueError("未知的IP")
 
     # 選擇安裝器類型
     if installer_type == "win":
@@ -30,7 +34,7 @@ def main():
     controller = sw.DeviceController(IP_adr=ip)
     ascii_art = ASCIIART.ASCIIArtBuilder()  # 一定要匯入，否則 DP 會出錯
     directory = r"C:\Program Files (x86)\DediProg\SF100"  # 修改為實際路徑
-    programmer = DediProg_CMD.Programmer(directory, bios_filename, ascii_art)
+    programmer = DediProg_CMD.Programmer(directory, bios_path, ascii_art)
 
     # 執行程序
     controller.ACoffcheck()
