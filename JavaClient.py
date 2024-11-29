@@ -78,17 +78,18 @@ class AutoInstaller:
 
         # 點擊各個圖片元素
         time.sleep(2)
-        def dropdown():
-            self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9,delay=0)
-            
+        def dropdown():# 反覆點擊 dropdown 直到圖片消失
+            self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9)
         self.gui_ctrl.wait_for_image(dropdown_img,action=dropdown,repeat=True)
 
-        self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
-        
-        # 反覆點擊 viewer 直到圖片消失
-        def click_viewer():
+        def pin():# 反覆點擊 pin 直到圖片消失
+            self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
+        self.gui_ctrl.wait_for_image(pin_img,action=pin,repeat=True)      
+
+        def click_viewer():# 反覆點擊 viewer 直到圖片消失
             self.gui_ctrl.locate_and_click(2, viewer_img, confidence=0.8)
         self.gui_ctrl.wait_for_image(viewer_img, action=click_viewer, repeat=True)
+
 
         # 等待進入下一步操作的畫面
         scr_img = self.img_res.get_image_path("scr")
@@ -107,13 +108,11 @@ class AutoInstaller:
         cmd_location = pyautogui.locateOnScreen(cmd_img, confidence=0.8)
         if cmd_location:
             pyautogui.moveTo(pyautogui.center(cmd_location))
+        else:
+            pass
         time.sleep(2)
         self.gui_ctrl.locate_and_click(2, cmd_img, confidence=0.8, delay=1)
 
-        # 釋放 Win 和 Shift 鍵
-        self.keyboard.release(Key.cmd) 
-        self.keyboard.release(Key.shift)
-        time.sleep(3)
 
     def _handle_restart(self):
         """

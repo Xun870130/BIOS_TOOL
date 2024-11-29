@@ -27,9 +27,11 @@ class ImageResource:
             "wmount": "UI_image/Wmount.jpg",
             "boot_failed": "UI_image/boot_failed.jpg",
             "esc": "UI_image/esc.png",
-            "fast_boot_disable": "UI_image/fast_boot_disable.jpg",
+            "fast_boot": "UI_image/fast_boot_disable.jpg",
+            "fast_boot_enable": "UI_image/fast_boot_disable2.jpg",
             "usb_device": "UI_image/usb_device.jpg",
-            "boot_manager": "UI_image/boot_manager.jpg"
+            "boot_manager": "UI_image/boot_manager.jpg",
+            "press_enter": "UI_image/press_enter.jpg"
         }
 
     def  get_image_path(self, image_name: str) -> str:
