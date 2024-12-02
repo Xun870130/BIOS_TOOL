@@ -2,7 +2,7 @@ import pyautogui
 import os
 import time
 import sys
-import ImageResource
+import BIOS_OS.res_image as res_image
 from pynput.keyboard import Key, Controller
 
 class ClientController:
@@ -21,7 +21,7 @@ class ClientController:
             iso_path (str): 預設的 ISO 檔案路徑。
         """
         self.iso_path = iso_path
-        self.get_path = ImageResource.ImageResource()
+        self.get_path = res_image.ImageResource()
         self.keyboard = Controller()
         if hasattr(sys, '_MEIPASS'):
             # 如果在 PyInstaller 打包後的環境中，使用 _MEIPASS 獲取路徑

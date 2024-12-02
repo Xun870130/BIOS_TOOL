@@ -1,10 +1,10 @@
 import pyautogui
 import time
 import requests
-import powerSW2 as sw
+import BIOS_OS.ctrl_pwswitch as sw
 from pynput.keyboard import Key, Controller
-import GUI_Ctrl as GCtrl
-import ImageResource
+import BIOS_OS.ctrl_autogui as GCtrl
+import BIOS_OS.res_image as res_image
 
 class AutoInstaller:
     """
@@ -31,7 +31,7 @@ class AutoInstaller:
             ip (str): The IP address of the controlled device.
         """
         self.ip = ip
-        self.img_res = ImageResource.ImageResource()  # Image resource manager for GUI operations
+        self.img_res = res_image.ImageResource()  # Image resource manager for GUI operations
         self.gui_ctrl = GCtrl.ClientController()  # GUI controller
         self.keyboard = Controller()  # Keyboard controller for simulating key presses
         self.ctrl = sw.DeviceController(self.ip)  # Device controller for controlling the device

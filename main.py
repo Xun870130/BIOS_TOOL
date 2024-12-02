@@ -1,9 +1,9 @@
 import argparse
-import powerSW2 as sw
-import WindowsClient
-import JavaClient
-import ASCIIART
-import DediProg_CMD
+import BIOS_OS.ctrl_pwswitch as sw
+import BIOS_OS.client_windows as client_windows
+import BIOS_OS.client_java as client_java
+import BIOS_OS.res_ASCIIart as res_ASCIIart
+import BIOS_OS.ctrl_dediprog as ctrl_dediprog
 
 def main():
     """
@@ -41,8 +41,8 @@ def main():
 
     # Map installer types
     installers = {
-        "win": WindowsClient.AutoInstaller,
-        "java": JavaClient.AutoInstaller
+        "win": client_windows.AutoInstaller,
+        "java": client_java.AutoInstaller
     }
     installer_class = installers.get(installer_type)
     if not installer_class:
@@ -52,9 +52,9 @@ def main():
 
     # Initialize components
     controller = sw.DeviceController(IP_adr=ip)
-    ascii_art = ASCIIART.ASCIIArtBuilder()
+    ascii_art = res_ASCIIart.ASCIIArtBuilder()
     directory = r"C:\Program Files (x86)\DediProg\SF100"
-    programmer = DediProg_CMD.Programmer(directory, bios_path, ascii_art)
+    programmer = ctrl_dediprog.Programmer(directory, bios_path, ascii_art)
 
     try:
         # Perform automation steps

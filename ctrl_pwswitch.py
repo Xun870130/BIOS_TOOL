@@ -1,9 +1,9 @@
 import time
 import requests
-import ASCIIART
+import BIOS_OS.res_ASCIIart as res_ASCIIart
 
 # 初始化 ASCII 字符藝術文本
-text = ASCIIART.ASCIIArtBuilder()
+text = res_ASCIIart.ASCIIArtBuilder()
 ACSOFF = text.build("ac", "off")
 ACSON = text.build("ac", "on")
 DPSON = text.build("dp", "on")
