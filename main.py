@@ -6,44 +6,77 @@ import ASCIIART
 import DediProg_CMD
 
 def main():
-    # 設定命令
-    parser = argparse.ArgumentParser(description="自動安裝程序")
-    parser.add_argument("ip", help="設備控制器 IP，例如192.168.0.211")
-    parser.add_argument("type", choices=["win", "java"], help="選擇安裝器類型：win 或 java")
+    """
+    Main program to automate BIOS programming and system installation.
+
+    This script selects a device and installer type based on command-line arguments,
+    initializes the required components, and performs the full automation process.
+
+    Raises:
+        ValueError: If an invalid IP address or installer type is provided.
+    """
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description="Automated Installation Script")
+    parser.add_argument(
+        "ip", choices=["192.168.0.213", "192.168.0.211"],
+        help="Device controller IP, e.g., 192.168.0.211"
+    )
+    parser.add_argument(
+        "type", choices=["win", "java"],
+        help="Select installer type: 'win' or 'java'"
+    )
     args = parser.parse_args()
+
     ip = f"http://{args.ip}:16628"
     installer_type = args.type
 
-    #設定BIOS檔案
-    if ip == "http://192.168.0.213:16628":
-        bios_path = r"C:\__RVS_Execute_Software__\GoldenBIOS\WhiskeyLake_U\WhiskeyLake_U_3.bin"
-    elif ip == "http://192.168.0.211:16628":
-        bios_path = r"C:\__RVS_Execute_Software__\GoldenBIOS\IceLake_U\IceLake_U_3.bin"
-    else :
-        raise ValueError("未知的IP")
+    # Map BIOS paths based on IP address
+    bios_map = {
+        "http://192.168.0.213:16628": r"C:\__RVS_Execute_Software__\GoldenBIOS\WhiskeyLake_U\WhiskeyLake_U_3.bin",
+        "http://192.168.0.211:16628": r"C:\__RVS_Execute_Software__\GoldenBIOS\IceLake_U\IceLake_U_3.bin"
+    }
+    bios_path = bios_map.get(ip)
+    if not bios_path:
+        raise ValueError(f"Unknown IP address: {ip}")
 
-    # 選擇安裝器類型
-    if installer_type == "win":
-        installer = WindowsClient.AutoInstaller(ip=ip)
-    elif installer_type == "java":
-        installer = JavaClient.AutoInstaller(ip=ip)
-    else:
-        raise ValueError("未知的安裝器類型，請使用 'win' 或 'java'")
+    # Map installer types
+    installers = {
+        "win": WindowsClient.AutoInstaller,
+        "java": JavaClient.AutoInstaller
+    }
+    installer_class = installers.get(installer_type)
+    if not installer_class:
+        raise ValueError(f"Unknown installer type: {installer_type}")
 
-    # 初始化控制器、ASCII 輔助與燒錄器
+    installer = installer_class(ip=ip)
+
+    # Initialize components
     controller = sw.DeviceController(IP_adr=ip)
-    ascii_art = ASCIIART.ASCIIArtBuilder()  # 一定要匯入，否則 DP 會出錯
-    directory = r"C:\Program Files (x86)\DediProg\SF100"  # 修改為實際路徑
+    ascii_art = ASCIIART.ASCIIArtBuilder()
+    directory = r"C:\Program Files (x86)\DediProg\SF100"
     programmer = DediProg_CMD.Programmer(directory, bios_path, ascii_art)
 
-    # 執行程序
-    controller.ACoffcheck()
-    controller.dp_on()               # 打開 DP
-    programmer.run()                 # 執行 BIOS 燒錄
-    controller.dp_off()              # 關閉 DP
-    controller.cmos_switch()         # 重置 CMOS
-    controller.AConcheck()           # 打開 AC 並檢查狀態
-    installer.start_installation()   # 開始安裝操作系統
+    try:
+        # Perform automation steps
+        print("Checking AC power status...")
+        controller.ACoffcheck()
+        print("Turning on DP module...")
+        controller.dp_on()
+        print("Running BIOS programming...")
+        programmer.run()
+        print("Turning off DP module...")
+        controller.dp_off()
+        print("Resetting CMOS...")
+        controller.cmos_switch()
+        print("Turning on AC power...")
+        controller.AConcheck()
+        print("Starting system installation...")
+        installer.start_installation()
+        print("All operations completed successfully!")
+
+    except Exception as e:
+        print(f"Error occurred during execution: {e}")
+        # Additional error handling or cleanup logic can be added here
 
 if __name__ == "__main__":
     main()
