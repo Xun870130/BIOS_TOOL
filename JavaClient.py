@@ -8,40 +8,46 @@ import ImageResource
 
 class AutoInstaller:
     """
-    控制 Java 客戶端的自動掛載和操作。
+    Controls the automatic mounting and operation of the Java client.
 
-    主要功能包括：
-    - 開啟 KVM 和 AC。
-    - 啟動客戶端並進行圖形界面上的安裝操作。
-    - 支援 ISO 檔案的自動掛載。
+    Main functionalities include:
+    - Opening KVM and AC.
+    - Starting the client and performing installation operations on the GUI.
+    - Supports automatic mounting of ISO files.
 
-    屬性:
-    - ip (str): 控制裝置的 IP 地址
-    - iso_path (str): 系統映像檔的路徑
-    - img_res (ImageResource): 圖像資源管理，獲取 GUI 操作所需的圖像
-    - gui_ctrl (ClientController): 控制 GUI 點擊和圖片檢測
-    - keyboard (Controller): 鍵盤控制器，模擬鍵盤操作
-    - ctrl (DeviceController): 裝置控制器，管理硬體開關和狀態檢查
+    Attributes:
+        ip (str): The IP address of the controlled device.
+        iso_path (str): Path to the system image file.
+        img_res (ImageResource): Image resource manager for retrieving images required for GUI operations.
+        gui_ctrl (ClientController): Controller for GUI actions like clicks and image detection.
+        keyboard (Controller): Keyboard controller for simulating keyboard actions.
+        ctrl (DeviceController): Device controller for managing hardware switches and status checks.
     """
     def __init__(self, ip: str):
         """
-        初始化
+        Initializes the AutoInstaller instance.
 
-        :param ip: 控制設備的 IP 地址
-        :param iso_path: ISO 檔案的路徑
+        Args:
+            ip (str): The IP address of the controlled device.
         """
         self.ip = ip
-        self.img_res = ImageResource.ImageResource()  
-        self.gui_ctrl = GCtrl.ClientController()  
-        self.keyboard = Controller()  
-        self.ctrl = sw.DeviceController(self.ip)  
+        self.img_res = ImageResource.ImageResource()  # Image resource manager for GUI operations
+        self.gui_ctrl = GCtrl.ClientController()  # GUI controller
+        self.keyboard = Controller()  # Keyboard controller for simulating key presses
+        self.ctrl = sw.DeviceController(self.ip)  # Device controller for controlling the device
 
     def start_installation(self):
         """
-        主安裝流程:
-        控制設備上電、檢查電源狀態，並自動開啟 CMD 視窗啟動 Java 客戶端，並重啟系統進行 GUI 操作。
+        Main installation process:
+        Controls the power, checks the status, opens a CMD window, starts the Java client, and performs system restart
+        to initiate GUI-based operations.
+
+        This method will:
+        - Power on the device.
+        - Open the Java client in CMD and restart the system.
+        - Perform GUI operations after the restart.
         """
-        # 打開 KVM 和 AC，並檢查電源狀態
+        # Turn on KVM and AC, and check power status
         self.ctrl.kvm_on()
         self.ctrl.ac_on()
         time.sleep(10)
@@ -55,55 +61,57 @@ class AutoInstaller:
         except requests.exceptions.RequestException as e:
             print("Request failed:", e)
 
-        # 打開 CMD，並啟動 Java 客戶端
+        # Open CMD and start the Java client
         self.gui_ctrl.open_cmd()
-        self.gui_ctrl.start_client('java',ip=self.ip)
-        self.ctrl.reset()  # 系統重啟
+        self.gui_ctrl.start_client('java', ip=self.ip)
+        self.ctrl.reset()  # Restart system
         
-        # 執行 GUI 操作
+        # Perform GUI operations
         self._perform_gui_actions()
         time.sleep(1)
         
-        # 處理重啟流程
+        # Handle restart process
         self._handle_restart()
 
     def _perform_gui_actions(self):
         """
-        執行主要 GUI 操作:
-        定位各個 UI 元素並執行相應的點擊操作，掛載 ISO 映像，並打開 CMD。
+        Performs main GUI operations:
+        Locates various UI elements and performs the required actions like clicking, mounting ISO images, and opening CMD.
         """
         dropdown_img = self.img_res.get_image_path("dropdown")
         pin_img = self.img_res.get_image_path("pin9000")
         viewer_img = self.img_res.get_image_path("viewer")
 
-        # 點擊各個圖片元素
+        # Click on images
         time.sleep(2)
-        def dropdown():# 反覆點擊 dropdown 直到圖片消失
+
+        def dropdown():  # Repeatedly click dropdown until the image disappears
             self.gui_ctrl.locate_and_click(1, dropdown_img, confidence=0.9)
-        self.gui_ctrl.wait_for_image(dropdown_img,action=dropdown,repeat=True)
 
-        def pin():# 反覆點擊 pin 直到圖片消失
+        self.gui_ctrl.wait_for_image(dropdown_img, action=dropdown, repeat=True)
+
+        def pin():  # Repeatedly click pin until the image disappears
             self.gui_ctrl.locate_and_click(1, pin_img, confidence=0.8, delay=2)
-        self.gui_ctrl.wait_for_image(pin_img,action=pin,repeat=True)      
 
-        def click_viewer():# 反覆點擊 viewer 直到圖片消失
+        self.gui_ctrl.wait_for_image(pin_img, action=pin, repeat=True)
+
+        def click_viewer():  # Repeatedly click viewer until the image disappears
             self.gui_ctrl.locate_and_click(2, viewer_img, confidence=0.8)
+
         self.gui_ctrl.wait_for_image(viewer_img, action=click_viewer, repeat=True)
 
-
-        # 等待進入下一步操作的畫面
+        # Wait for the next step screen
         scr_img = self.img_res.get_image_path("scr")
         self.gui_ctrl.wait_for_image(scr_img, timeout=180)
 
-        # 定位並點擊 UI 元素進行掛載 ISO
-
+        # Locate and click UI elements to mount the ISO
         windows_img = self.img_res.get_image_path("windows")
         cmd_img = self.img_res.get_image_path("CMD")
 
-        # 執行掛載操作
-
+        # Perform ISO mounting
         self.gui_ctrl.mount_iso("java")
-                # 定位 CMD 圖片，並進行雙擊
+
+        # Locate CMD image and perform a double-click
         self.gui_ctrl.locate_and_click(3, windows_img, confidence=0.8, delay=1)
         cmd_location = pyautogui.locateOnScreen(cmd_img, confidence=0.8)
         if cmd_location:
@@ -113,18 +121,21 @@ class AutoInstaller:
         time.sleep(2)
         self.gui_ctrl.locate_and_click(2, cmd_img, confidence=0.8, delay=1)
 
-
     def _handle_restart(self):
         """
-        處理系統重啟及 UEFI 掛載
+        Handles system restart and UEFI mounting.
+
+        This method will:
+        - Restart the system and wait for a CMD error to appear.
+        - After restarting, it will wait for the UEFI screen and perform UEFI operations.
         """
-        # 重啟系統，並等待 CMD 錯誤出現
+        # Restart system and wait for CMD error to appear
         self.gui_ctrl.restart_system()
         time.sleep(1)
 
         cmd_err_img = self.img_res.get_image_path("CMDERROR")
         self.gui_ctrl.wait_for_image(cmd_err_img, repeat=True, timeout=20, action=self.gui_ctrl.restart_system)
         
-        # 等待 UEFI 畫面後執行 UEFI 操作
+        # Wait for UEFI screen and perform UEFI operation
         uefi_img = self.img_res.get_image_path("UEFI")
         self.gui_ctrl.wait_for_image(uefi_img, action=self.gui_ctrl.UEFI)

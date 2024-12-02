@@ -1,6 +1,6 @@
 class ASCIIArtBuilder:
     def __init__(self):
-        """初始化設備名稱、狀態名稱、操作符和狀態字典."""
+        """初始化設備名稱、狀態名稱、操作符和狀態字典。"""
         self.device_name = {
             "dp": r""" 
  ____  ____   
@@ -20,7 +20,7 @@ class ASCIIArtBuilder:
 | |   | |\/| | | | \___ \  
 | |___| |  | | |_| |___) | 
  \____|_|  |_|\___/|____/  """,
-             "kvm": r"""
+            "kvm": r"""
  _  ____     ____  __  
 | |/ /\ \   / /  \/  | 
 | ' /  \ \ / /| |\/| | 
@@ -32,7 +32,7 @@ class ASCIIArtBuilder:
 | |_) | |     
 |  __/| |___  
 |_|    \____| """
-            }
+        }
         self.status_name = r"""
      _        _              
  ___| |_ __ _| |_ _   _ ___  
@@ -52,13 +52,13 @@ class ASCIIArtBuilder:
 | | | |  \| |
 | |_| | |\  |
  \___/|_| \_|""",
-             "off": r"""
+            "off": r"""
   ___  _____ _____ 
  / _ \|  ___|  ___|
 | | | | |_  | |_   
 | |_| |  _| |  _|  
  \___/|_|   |_|    """
-            }
+        }
         self.Else = {
             "error": r"""
 ░▒▓████████▓▒░ ░▒▓███████▓▒░  ░▒▓███████▓▒░   ░▒▓██████▓▒░  ░▒▓███████▓▒░  
@@ -86,26 +86,30 @@ class ASCIIArtBuilder:
   | || | | | '__| '_ \   / _ \| |_| |_  | |_ / _` | | |/ _ \/ _` |
   | || |_| | |  | | | | | (_) |  _|  _| |  _| (_| | | |  __/ (_| |
   |_| \__,_|_|  |_| |_|  \___/|_| |_|   |_|  \__,_|_|_|\___|\__,_|"""
-
         }
 
     def call(self, text: str) -> str:
         """
-        根據給定的文本返回對應的 ASCII ART。
+        根據給定的文本返回對應的 ASCII 藝術字。
 
-        :param text: 要返回 ASCII 藝術字的文本。
-        :return: ASCII 藝術字串，如果沒有找到對應的文本，返回 "not found"。
+        Args:
+            text (str): 要返回 ASCII 藝術字的文本。
+
+        Returns:
+            str: ASCII 藝術字串，如果沒有找到對應的文本，返回 "not found"。
         """
         return self.Else.get(text, "not found")
-
 
     def build(self, device: str, state: str) -> str:
         """
         將設備名稱、狀態名稱、操作符和開關狀態組合在一起，並返回一個包含多行文本的 ASCII 藝術字串。
 
-        :param device: 設備名稱鍵（例如 "dp" 或 "power"）。
-        :param state: 狀態名稱鍵（例如 "on" 或 "off"）。
-        :return: 組合後的 ASCII 藝術字串。
+        Args:
+            device (str): 設備名稱鍵（例如 "dp" 或 "power"）。
+            state (str): 狀態名稱鍵（例如 "on" 或 "off"）。
+
+        Returns:
+            str: 組合後的 ASCII 藝術字串。
         """
         # 獲取設備和狀態的 ASCII ART，並按行拆分
         device_art_lines = self.device_name.get(device.lower(), "unknow").splitlines()
@@ -124,8 +128,3 @@ class ASCIIArtBuilder:
             )
         # 返回最終組合的多行字串
         return "\n".join(combined_art)
-
-# 示例：
-# A = ASCIIArtBuilder()
-# ZZ = A.build("power", "on")
-# print(ZZ)
