@@ -1,8 +1,6 @@
-
-#文字粗體化，單純字太小不好Debug
-
 class ASCIIArtBuilder:
     def __init__(self):
+        """初始化設備名稱、狀態名稱、操作符和狀態字典."""
         self.device_name = {
             "dp": r""" 
  ____  ____   
@@ -69,12 +67,12 @@ class ASCIIArtBuilder:
 ░▒▓██████▓▒░   ░▒▓███████▓▒░  ░▒▓███████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓███████▓▒░  
 ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
 ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░ """,
+░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░ """, 
 
             "programing": r"""
  ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ 
 ||P |||r |||o |||g |||r |||a |||m |||i |||n |||g ||
-||__|||__|||__|||__|||__|||__|||__|||__|||__|||__||
+||__|||__|||__|||__|||__|||__|||__|||__|||__|||__|| 
 |/__\|/__\|/__\|/__\|/__\|/__\|/__\|/__\|/__\|/__\|""",
             "success": r"""
 ░░      ░░░  ░░░░  ░░░      ░░░░      ░░░        ░░░      ░░░░      ░░
@@ -90,20 +88,26 @@ class ASCIIArtBuilder:
   |_| \__,_|_|  |_| |_|  \___/|_| |_|   |_|  \__,_|_|_|\___|\__,_|"""
 
         }
-    def call (self,text: str) ->str:
-        # 返回指定文本的 ASCII ART    
+
+    def call(self, text: str) -> str:
+        """
+        根據給定的文本返回對應的 ASCII ART。
+
+        :param text: 要返回 ASCII 藝術字的文本。
+        :return: ASCII 藝術字串，如果沒有找到對應的文本，返回 "not found"。
+        """
         return self.Else.get(text, "not found")
 
 
-    def build(self, device: str, state: str) ->str:
+    def build(self, device: str, state: str) -> str:
         """
-        將設備名稱、狀態名稱、操作符和開關狀態組合在一起，按行組合並返回。
+        將設備名稱、狀態名稱、操作符和開關狀態組合在一起，並返回一個包含多行文本的 ASCII 藝術字串。
 
-        :param device: 設備名稱鍵 (如 "dp" 或 "power")
-        :param state: 狀態名稱鍵 (如 "on" 或 "off")
-        :return: ASCII ART 字串
+        :param device: 設備名稱鍵（例如 "dp" 或 "power"）。
+        :param state: 狀態名稱鍵（例如 "on" 或 "off"）。
+        :return: 組合後的 ASCII 藝術字串。
         """
-        # 獲取設備和狀態的 ASCII ART，按行拆分
+        # 獲取設備和狀態的 ASCII ART，並按行拆分
         device_art_lines = self.device_name.get(device.lower(), "unknow").splitlines()
         status_art_lines = self.status_name.splitlines()
         operator_art_lines = self.operator.splitlines()
@@ -115,13 +119,13 @@ class ASCIIArtBuilder:
             combined_art.append(
                 device_art_lines[i] +  # 設備名稱部分
                 status_art_lines[i] +  # 狀態名稱部分
-                operator_art_lines[i]+  # 操作符部分
+                operator_art_lines[i] +  # 操作符部分
                 state_art_lines[i]  # 狀態部分
             )
-        # 最終組合成一個單行顯示的字串
+        # 返回最終組合的多行字串
         return "\n".join(combined_art)
 
-# 示例:
-# A=ASCIIArtBuilder()
-# ZZ=A.build("power","on")
+# 示例：
+# A = ASCIIArtBuilder()
+# ZZ = A.build("power", "on")
 # print(ZZ)
