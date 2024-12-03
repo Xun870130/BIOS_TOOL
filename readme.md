@@ -41,9 +41,9 @@ pip install -r requirements.txt
 ```
 備註: requirements.txt 文件中應包含以下主要相依套件：
 
-pyautogui
-requests
-pynput
+- pyautogui
+- requests
+- pynput
 使用說明
 啟動程式
 透過以下命令執行主程序 main.py，並依需求提供 IP 和 type 參數：
@@ -53,12 +53,12 @@ python main.py <IP> <type>
 ```
 IP (必填): 選擇設備的控制 IP 地址，支援以下選項：
 
-192.168.0.213
-192.168.0.211
+- 192.168.0.213
+- 192.168.0.211
 type (必填): 指定安裝類型，支援以下選項：
 
-win (Windows 安裝流程)
-java (Java 環境安裝流程)
+- win (Windows 安裝流程)
+- java (Java 環境安裝流程)
 範例：
 ```bash
 python main.py 192.168.0.211 java
