@@ -75,8 +75,8 @@ python main.py 192.168.0.211 java
 - 重置 CMOS。
 - 開啟 AC 電源。
 啟動對應類型的安裝程序：
--Windows: 使用 client_windows.py 啟動安裝。
--Java: 使用 client_java.py 啟動安裝。
+- Windows: 使用 client_windows.py 啟動安裝。
+- Java: 使用 client_java.py 啟動安裝。
 程序完成提示。
 模組說明
 主模組 (main.py)
@@ -85,15 +85,15 @@ python main.py 192.168.0.211 java
 電源控制模組 (ctrl_pwswitch.py)
 提供對以下設備的電源控制功能：
 
-AC 電源
-DisplayPort 模組
-CMOS 重置
-BIOS 燒錄模組 (ctrl_dediprog.py)
-透過 DediProg 工具控制 BIOS 燒錄過程，包括芯片檢測與 BIOS 映像檔寫入。
+- AC 電源
+- DisplayPort 模組
+- CMOS 重置
+- BIOS 燒錄模組 (ctrl_dediprog.py)
+- 透過 DediProg 工具控制 BIOS 燒錄過程，包括芯片檢測與 BIOS 映像檔寫入。
 
 ASCII 輸出模組 (res_ASCIIart.py)
-生成 ASCII 藝術字作為系統提示訊息，提升操作可讀性。
+- 生成 ASCII 藝術字作為系統提示訊息，提升操作可讀性。
 
 安裝程序模組
-client_windows.py: Windows 環境的安裝流程自動化。
-client_java.py: Java 環境的安裝流程自動化。
+- client_windows.py: Windows 環境的安裝流程自動化。
+- client_java.py: Java 環境的安裝流程自動化。
