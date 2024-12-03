@@ -61,19 +61,19 @@ win (Windows 安裝流程)
 java (Java 環境安裝流程)
 範例：
 ```bash
-python main.py 192.168.0.211 win
+python main.py 192.168.0.211 java
 ```
 程序流程
 執行 main.py 後，程序將自動完成以下步驟：
 
--檢查 AC 電源狀態。
--啟動 DP (DisplayPort) 模組。
--執行 BIOS 燒錄：
--根據 IP 地址選擇對應的 BIOS 映像檔。
--使用 DediProg BIOS 燒錄工具。
--關閉 DP 模組。
--重置 CMOS。
--開啟 AC 電源。
+- 檢查 AC 電源狀態。
+- 啟動 DP (DisplayPort) 模組。
+- 執行 BIOS 燒錄：
+- 根據 IP 地址選擇對應的 BIOS 映像檔。
+- 使用 DediProg BIOS 燒錄工具。
+- 關閉 DP 模組。
+- 重置 CMOS。
+- 開啟 AC 電源。
 啟動對應類型的安裝程序：
 -Windows: 使用 client_windows.py 啟動安裝。
 -Java: 使用 client_java.py 啟動安裝。
