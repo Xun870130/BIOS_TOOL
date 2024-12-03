@@ -44,8 +44,11 @@ pip install -r requirements.txt
 - pyautogui
 - requests
 - pynput
+
 使用說明
+
 啟動程式
+
 透過以下命令執行主程序 main.py，並依需求提供 IP 和 type 參數：
 
 ```bash
@@ -64,6 +67,7 @@ type (必填): 指定安裝類型，支援以下選項：
 python main.py 192.168.0.211 java
 ```
 程序流程
+
 執行 main.py 後，程序將自動完成以下步驟：
 
 - 檢查 AC 電源狀態。
