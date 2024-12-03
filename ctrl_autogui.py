@@ -222,7 +222,6 @@ class ClientController:
         self.wait_for_image(self.get_path.get_image_path("boot_manager"))
         try:
             locate = pyautogui.locateOnScreen(self.get_path.get_image_path("usb_device"), confidence=0.8)
-            pyautogui.screenshot("usb_device.png", locate)
             if locate is not None:
                 time.sleep(1)
                 self.press_and_release(Key.down, delay=0.1)
