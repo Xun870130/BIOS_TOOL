@@ -20,7 +20,7 @@
 ├── requirements.txt
 └── README.md              
 ```
-安裝指引
+## 安裝指引
 1. 建立虛擬環境 (py-env)
 ```bash
 python -m venv py-env
@@ -45,9 +45,9 @@ pip install -r requirements.txt
 - requests
 - pynput
 
-使用說明
+## 使用說明
 
-啟動程式
+### 啟動程式
 
 透過以下命令執行主程序 main.py，並依需求提供 IP 和 type 參數：
 
@@ -66,7 +66,7 @@ type (必填): 指定安裝類型，支援以下選項：
 ```bash
 python main.py 192.168.0.211 java
 ```
-程序流程
+### 程序流程
 
 執行 main.py 後，程序將自動完成以下步驟：
 
@@ -78,15 +78,20 @@ python main.py 192.168.0.211 java
 - 關閉 DP 模組。
 - 重置 CMOS。
 - 開啟 AC 電源。
+
 啟動對應類型的安裝程序：
+
 - Windows: 使用 client_windows.py 啟動安裝。
 - Java: 使用 client_java.py 啟動安裝。
 程序完成提示。
-模組說明
-主模組 (main.py)
-統籌整個自動化流程，根據命令列參數初始化控制模組與安裝程序。
 
-電源控制模組 (ctrl_pwswitch.py)
+## 模組說明
+
+### 主模組 (main.py)
+- 統籌整個自動化流程，根據命令列參數初始化控制模組與安裝程序。
+
+### 電源控制模組 (ctrl_pwswitch.py)
+
 提供對以下設備的電源控制功能：
 
 - AC 電源
@@ -95,9 +100,9 @@ python main.py 192.168.0.211 java
 - BIOS 燒錄模組 (ctrl_dediprog.py)
 - 透過 DediProg 工具控制 BIOS 燒錄過程，包括芯片檢測與 BIOS 映像檔寫入。
 
-ASCII 輸出模組 (res_ASCIIart.py)
+### ASCII 輸出模組 (res_ASCIIart.py)
 - 生成 ASCII 藝術字作為系統提示訊息，提升操作可讀性。
 
-安裝程序模組
+### 安裝程序模組
 - client_windows.py: Windows 環境的安裝流程自動化。
 - client_java.py: Java 環境的安裝流程自動化。
