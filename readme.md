@@ -18,7 +18,7 @@
 ├── main.py                 # 主程序，用於啟動控制與安裝流程
 ├── ctrl_pwswitch.py             # 電源開關與設備控制
 ├── requirements.txt
-└── README.md               # 專案說明文件
+└── README.md              
 ```
 安裝指引
 1. 建立虛擬環境 (py-env)
