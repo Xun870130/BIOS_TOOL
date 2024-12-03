@@ -6,90 +6,94 @@
 
 ```plaintext
 .
-├── BIOS/                   # BIOS 映像檔案資料夾
 ├── java/                   # Java 客戶端相關資源
-├── py-env/                 # 虛擬環境資料夾
 ├── UI_image/               # 用於 GUI 操作的圖像資源
-├── ASCIIART.py             # ASCII 藝術字生成器
-├── DediProg_CMD.py         # DediProg BIOS 燒錄控制
-├── GUI_Ctrl.py             # 圖形界面控制腳本
-├── ImageResource.py        # 管理 UI 圖像資源
+├── res_ASCIIart.py             # ASCII 藝術字生成器
+├── ctrl_dediprog.py         # DediProg BIOS 燒錄控制
+├── ctrl_autogui.py             # 圖形界面控制腳本
+├── res_image.py        # 管理 UI 圖像資源
 ├── JavaClient.jar          # Java 客戶端 JAR 檔案
-├── JavaClient.py           # Java 客戶端自動安裝控制
-├── WindowsClient.py        # Windows 客戶端自動安裝控制
+├── client_java.py           # Java 客戶端自動安裝控制
+├── client_windows.py        # Windows 客戶端自動安裝控制
 ├── main.py                 # 主程序，用於啟動控制與安裝流程
-├── powerSW2.py             # 電源開關與設備控制
+├── ctrl_pwswitch.py             # 電源開關與設備控制
+├── requirements.txt
 └── README.md               # 專案說明文件
 ```
 安裝指引
 1. 建立虛擬環境 (py-env)
-
 ```bash
 python -m venv py-env
 ```
-
 2. 啟動虛擬環境
 Windows:
 ```bash
-複製程式碼
 py-env\Scripts\activate
 ```
-macOS / Linux:
 ```bash
 source py-env/bin/activate
 ```
 3. 安裝相依套件
-在虛擬環境中安裝相依的 Python 套件：
+在虛擬環境中安裝專案所需的 Python 相依套件：
 
 ```bash
 pip install -r requirements.txt
 ```
-備註: requirements.txt 文件中應包含 pyautogui, requests, pynput 等相依套件。
+備註: requirements.txt 文件中應包含以下主要相依套件：
 
-4. 設定 BIOS 映像
-將 BIOS 檔案 (例如 IceLake_U_3.bin) 放置於 BIOS 資料夾中，並在 main.py 中指定正確的 BIOS 檔案名稱。
-
-5. 設定 KVM 控制 IP
-修改 main.py 中的裝置 IP 位址來匹配您的設備環境。預設 IP 為 http://192.168.0.211:16628。
-
+pyautogui
+requests
+pynput
 使用說明
-啟動 main.py 主程序會執行以下操作:
+啟動程式
+透過以下命令執行主程序 main.py，並依需求提供 IP 和 type 參數：
 
-檢查 AC 和電源狀態並啟動設備。
-BIOS 燒錄控制：使用 DediProg 控制器進行 BIOS 燒錄。
-GUI 自動化操作：透過 GUI 控制掛載 ISO 檔案，並自動進行安裝流程。
-支援 Windows 與 Java 環境的安裝流程。
 ```bash
-python main.py
+python main.py <IP> <type>
 ```
-## 模組說明
-ASCIIART.py
-提供 ASCII 藝術字生成器，用於系統訊息的 ASCII 輸出。
+IP (必填): 選擇設備的控制 IP 地址，支援以下選項：
 
-DediProg_CMD.py
-管理 DediProg BIOS 燒錄命令，包含芯片檢測與燒錄操作。
+192.168.0.213
+192.168.0.211
+type (必填): 指定安裝類型，支援以下選項：
 
-GUI_Ctrl.py
-負責 GUI 的自動點擊控制，包含圖像匹配與 UI 點擊操作。
+win (Windows 安裝流程)
+java (Java 環境安裝流程)
+範例：
+```bash
+python main.py 192.168.0.211 win
+```
+程序流程
+執行 main.py 後，程序將自動完成以下步驟：
 
-ImageResource.py
-管理 UI 圖像資源的檔案路徑，用於 GUI 自動操作的圖像檢測。
+檢查 AC 電源狀態。
+啟動 DP (DisplayPort) 模組。
+執行 BIOS 燒錄：
+根據 IP 地址選擇對應的 BIOS 映像檔。
+使用 DediProg BIOS 燒錄工具。
+關閉 DP 模組。
+重置 CMOS。
+開啟 AC 電源。
+啟動對應類型的安裝程序：
+Windows: 使用 client_windows.py 啟動安裝。
+Java: 使用 client_java.py 啟動安裝。
+程序完成提示。
+模組說明
+主模組 (main.py)
+統籌整個自動化流程，根據命令列參數初始化控制模組與安裝程序。
 
-JavaClient.py
-Java 環境的自動安裝控制腳本，包括 ISO 掛載、KVM 開關與系統重啟。
+電源控制模組 (ctrl_pwswitch.py)
+提供對以下設備的電源控制功能：
 
-WindowsClient.py
-Windows 環境的自動安裝控制腳本，與 JavaClient 類似，用於控制 Windows 客戶端的安裝。
+AC 電源
+DisplayPort 模組
+CMOS 重置
+BIOS 燒錄模組 (ctrl_dediprog.py)
+透過 DediProg 工具控制 BIOS 燒錄過程，包括芯片檢測與 BIOS 映像檔寫入。
 
-main.py
-主程序，整合各模組並執行設備控制與自動安裝流程。
+ASCII 輸出模組 (res_ASCIIart.py)
+生成 ASCII 藝術字作為系統提示訊息，提升操作可讀性。
 
-powerSW2.py
-電源開關控制模組，提供 KVM、AC、DP 等多種開關控制，以及 CMOS 重置功能。
-
-注意事項
-確保您的設備網路連線正常，並設定正確的 IP 地址來控制裝置。
-建議在操作之前確認所有硬體連接良好，包括 KVM、BIOS 燒錄器等。
-圖像檢測與點擊基於 pyautogui 和 pynput，操作環境需與 GUI 資源相容。
-聯絡方式
-如有任何問題或建議，請聯絡專案維護者。
+安裝程序模組
+client_windows.py: Windows 環境的安裝流程自動化。
+client_java.py: Java 環境的安裝流程自動化。
