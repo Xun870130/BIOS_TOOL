@@ -1,10 +1,10 @@
 import pyautogui
 import time
 import requests
-import BIOS_OS.ctrl_pwswitch as sw
+import ctrl_pwswitch as sw
 from pynput.keyboard import Key, Controller
-import BIOS_OS.ctrl_autogui as GCtrl
-import BIOS_OS.res_image as res_image
+import ctrl_autogui as GCtrl
+import res_image
 
 class AutoInstaller:
     """

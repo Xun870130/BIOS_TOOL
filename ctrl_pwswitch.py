@@ -1,6 +1,6 @@
 import time
 import requests
-import BIOS_OS.res_ASCIIart as res_ASCIIart
+import res_ASCIIart
 
 # 初始化 ASCII 字符藝術文本
 text = res_ASCIIart.ASCIIArtBuilder()

@@ -1,9 +1,9 @@
 import argparse
-import BIOS_OS.ctrl_pwswitch as sw
-import BIOS_OS.client_windows as client_windows
-import BIOS_OS.client_java as client_java
-import BIOS_OS.res_ASCIIart as res_ASCIIart
-import BIOS_OS.ctrl_dediprog as ctrl_dediprog
+import ctrl_pwswitch as sw
+import client_windows 
+import client_java 
+import res_ASCIIart 
+import ctrl_dediprog 
 
 def main():
     """
@@ -16,14 +16,17 @@ def main():
         ValueError: If an invalid IP address or installer type is provided.
     """
     # Set up argument parser
-    parser = argparse.ArgumentParser(description="Automated Installation Script")
+    parser = argparse.ArgumentParser(
+        description="Automated Installation Script",
+        formatter_class=argparse.RawTextHelpFormatter
+    )
     parser.add_argument(
         "ip", choices=["192.168.0.213", "192.168.0.211"],
         help="Device controller IP, e.g., 192.168.0.211"
     )
     parser.add_argument(
         "type", choices=["win", "java"],
-        help="Select installer type: 'win' or 'java'"
+        help="Select client type: 'win' or 'java'"
     )
     args = parser.parse_args()
 

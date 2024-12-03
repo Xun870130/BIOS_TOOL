@@ -2,7 +2,7 @@ import pyautogui
 import os
 import time
 import sys
-import BIOS_OS.res_image as res_image
+import res_image
 from pynput.keyboard import Key, Controller
 
 class ClientController:
@@ -23,12 +23,13 @@ class ClientController:
         self.iso_path = iso_path
         self.get_path = res_image.ImageResource()
         self.keyboard = Controller()
+        self.current_directory2 = os.getcwd()
         if hasattr(sys, '_MEIPASS'):
             # 如果在 PyInstaller 打包後的環境中，使用 _MEIPASS 獲取路徑
             self.current_directory = sys._MEIPASS
         else:
             # 否則，使用標準的當前工作目錄
-            self.current_directory = os.getcwd()
+            self.current_directory2 = os.getcwd()
 
     def open_cmd(self):
         """
@@ -53,14 +54,14 @@ class ClientController:
         """
         if ip == "http://192.168.0.211:16628":
             if type == 'java':
-                command = rf'"{self.current_directory}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory}\JavaClient.jar" 192.168.10.211:9000 -u administrator -p password '
+                command = rf'"{self.current_directory2}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory2}\JavaClient.jar" 192.168.10.211:9000 -u administrator -p password '
             elif type == 'windows':
                 command = rf' "C:\__RVS_Execute_Software__\Winclient\WinClient.exe" 192.168.10.211:9000 -u administrator -p password '
             else:
                 print('path error')
         elif ip == "http://192.168.0.213:16628":
             if type == 'java':
-                command = rf'"{self.current_directory}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory}\JavaClient.jar" 192.168.10.213:9000 -u administrator -p password '
+                command = rf'"{self.current_directory2}\java\bin\java.exe" -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -jar "{self.current_directory2}\JavaClient.jar" 192.168.10.213:9000 -u administrator -p password '
             elif type == 'windows':
                 command = rf' "C:\__RVS_Execute_Software__\Winclient\WinClient.exe" 192.168.10.213:9000 -u administrator -p password '
             else:
