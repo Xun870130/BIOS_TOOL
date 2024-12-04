@@ -23,7 +23,7 @@
 ## 安裝指引
 1. 建立虛擬環境 (py-env)
 ```bash
-python -m venv py-env
+python -3.10.5 venv py-env
 ```
 2. 啟動虛擬環境
 Windows:
